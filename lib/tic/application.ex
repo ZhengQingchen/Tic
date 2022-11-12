@@ -5,6 +5,8 @@ defmodule Tic.Application do
 
   use Application
 
+  @registry :game_registry
+
   @impl true
   def start(_type, _args) do
     children = [
@@ -17,10 +19,15 @@ defmodule Tic.Application do
       # Start Finch
       {Finch, name: Tic.Finch},
       # Start the Endpoint (http/https)
-      TicWeb.Endpoint
+      TicWeb.Endpoint,
+
       # Start a worker by calling: Tic.Worker.start_link(arg)
       # {Tic.Worker, arg}
+      Tic.Game.Supervisor,
+      {Registry, [keys: :unique, name: @registry]}
     ]
+
+    # Tic.Engine.new()
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
