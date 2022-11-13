@@ -18,7 +18,7 @@ defmodule TicWeb.GameLive.Show do
           {:ok,
            socket
            |> assign(:role, role)
-           |> assign(:game, transform_game(game))}
+           |> assign(:game, game)}
 
         {:error, reason} ->
           Logger.info("join game error: #{reason}")
@@ -63,7 +63,7 @@ defmodule TicWeb.GameLive.Show do
 
   @impl true
   def handle_info(%{payload: game, event: "update_game"}, socket) do
-    {:noreply, assign(socket, :game, transform_game(game))}
+    {:noreply, assign(socket, :game, game)}
   end
 
   @impl true
@@ -76,9 +76,5 @@ defmodule TicWeb.GameLive.Show do
     end
 
     :ok
-  end
-
-  defp transform_game(game) do
-    %{game | board: Enum.with_index(game.board)}
   end
 end
